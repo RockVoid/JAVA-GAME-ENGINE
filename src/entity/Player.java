@@ -46,6 +46,7 @@ public class Player extends Entity {
 	}
 	
 	public void update() {
+		
 		if(keyH.rightPressed == true) { 
 			x += speed; 
 			direction = "right";
@@ -69,38 +70,29 @@ public class Player extends Entity {
 			spriteCounter = 0;
 		}
 	}
-	
+	public BufferedImage setDirectionImage(BufferedImage movement,BufferedImage patternImg1,BufferedImage patternImg2) {
+		if(spriteNum) {
+			movement = patternImg1;
+			return movement;
+		}
+		movement = patternImg2;
+		return movement;
+	}
 	public void draw(Graphics2D g2) {
 		BufferedImage image = null;
 		
 		switch(direction) {
 			case "up":
-				if(spriteNum) {
-					image = up1;
-					break;
-				}
-				image = up2;
+				image = setDirectionImage(image, up1, up2);
 				break;
 			case "down":
-				if(spriteNum) {
-					image = down1;
-					break;
-				}
-				image = down2;
+				image = setDirectionImage(image, down1, down2);
 				break;
 			case "right":
-				if(spriteNum) {
-					image = right1;
-					break;
-				}
-				image = right2;
+				image = setDirectionImage(image, right1, right2);
 				break;
 			case "left":
-				if(spriteNum) {
-					image = left1;
-					break;
-				}
-				image = left2;
+				image = setDirectionImage(image, left1, left2);
 				break;
 		}
 		

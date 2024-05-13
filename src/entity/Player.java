@@ -1,6 +1,5 @@
 package entity;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -63,6 +62,12 @@ public class Player extends Entity {
 			y += speed; 
 			direction = "down";
 		}
+		
+		spriteCounter++;
+		if(spriteCounter == 12) {
+			spriteNum = !spriteNum;
+			spriteCounter = 0;
+		}
 	}
 	
 	public void draw(Graphics2D g2) {
@@ -70,16 +75,32 @@ public class Player extends Entity {
 		
 		switch(direction) {
 			case "up":
-				image = up1;
+				if(spriteNum) {
+					image = up1;
+					break;
+				}
+				image = up2;
 				break;
 			case "down":
-				image = down1;
+				if(spriteNum) {
+					image = down1;
+					break;
+				}
+				image = down2;
 				break;
 			case "right":
-				image = right1;
+				if(spriteNum) {
+					image = right1;
+					break;
+				}
+				image = right2;
 				break;
 			case "left":
-				image = left1;
+				if(spriteNum) {
+					image = left1;
+					break;
+				}
+				image = left2;
 				break;
 		}
 		

@@ -52,7 +52,7 @@ public class Player extends Entity {
 			spriteCounter = 0;
 		}
 	}
-	
+	// 2REFACTOR
 	public void update() {		
 		if(keyH.rightPressed) { 
 			x += speed; 

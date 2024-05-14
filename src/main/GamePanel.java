@@ -1,6 +1,7 @@
 package main;
 
 import entity.Player;
+import tile.TileManager;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,8 +22,8 @@ public class GamePanel extends JPanel implements Runnable{
 	// Set the size of character on screen - tile = "azulejo" = quadrado(our pixel size)
 	public final int tileSize = scale * originalTileSize;
 	// Set the rows and cols of the game
-	final int maxScreenCol = 16;
-	final int maxScreenRow = 12;
+	public final int maxScreenCol = 16;
+	public final int maxScreenRow = 12;
 	// Set the screen height, width and resolution
 	final int screenWidth = tileSize * maxScreenCol; // Col pixels = 768
 	final int screenHeight = tileSize * maxScreenRow; // Row pixels = 576
@@ -31,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable{
 	Thread gameThread;
 	KeyHandler keyH = new KeyHandler(); // Game manager keyHandler
 	Player player = new Player(this, keyH);
-	
+	TileManager tileManager = new TileManager(this);
 	
 	int playerX = 100;
 	int playerY = 100;
@@ -87,6 +88,8 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(g);
 		
 		Graphics2D g2 = (Graphics2D)g;
+		
+		tileManager.draw(g2);
 		player.draw(g2);
 		
 		g2.dispose();

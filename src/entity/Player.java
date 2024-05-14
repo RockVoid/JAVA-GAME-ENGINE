@@ -45,32 +45,38 @@ public class Player extends Entity {
 		}
 	}
 	
-	public void update() {
-		
-		if(keyH.rightPressed == true) { 
-			x += speed; 
-			direction = "right";
-		}
-		if(keyH.leftPressed == true) { 
-			x -= speed; 
-			direction = "left";
-		}
-		if(keyH.upPressed == true) { 
-			y -= speed; 
-			direction = "up";
-		}
-		if(keyH.downPressed == true) { 
-			y += speed; 
-			direction = "down";
-		}
-		
+	public void movePlayer() {
 		spriteCounter++;
 		if(spriteCounter == 12) {
 			spriteNum = !spriteNum;
 			spriteCounter = 0;
 		}
 	}
-	public BufferedImage setDirectionImage(BufferedImage movement,BufferedImage patternImg1,BufferedImage patternImg2) {
+	
+	public void update() {		
+		if(keyH.rightPressed) { 
+			x += speed; 
+			direction = "right";
+			movePlayer();
+		}
+		if(keyH.leftPressed) { 
+			x -= speed; 
+			direction = "left";
+			movePlayer();
+		}
+		if(keyH.upPressed) { 
+			y -= speed; 
+			direction = "up";
+			movePlayer();
+		}
+		if(keyH.downPressed) { 
+			y += speed; 
+			direction = "down";
+			movePlayer();
+		} 
+	}
+	
+	public BufferedImage setDirectionImage(BufferedImage movement, BufferedImage patternImg1, BufferedImage patternImg2) {
 		if(spriteNum) {
 			movement = patternImg1;
 			return movement;
@@ -78,6 +84,7 @@ public class Player extends Entity {
 		movement = patternImg2;
 		return movement;
 	}
+	
 	public void draw(Graphics2D g2) {
 		BufferedImage image = null;
 		

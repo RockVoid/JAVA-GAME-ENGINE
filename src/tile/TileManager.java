@@ -1,10 +1,12 @@
 package tile;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 
@@ -14,35 +16,53 @@ public class TileManager {
 	GamePanel gp;
 	Tile[] tile;
 	int mapTileNum[][];
+	String[] gameTilesImages = {
+			"/tiles/grass01.png",
+			"/tiles/wall.png",
+			"/tiles/water01.png",
+			"/tiles/earth.png",
+			"/tiles/tree.png",
+			"/tiles/sand.png"
+	};
 	
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
 		tile = new Tile[10];
 		mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
 		
-		getTileImage();
-		loadMapFromFile();
+		fillTileWithImages(gameTilesImages);
+		loadMapFromFile("/maps/map01.txt");
 	}
 	
-	public void getTileImage() {
+	public BufferedImage getImage(String filePath) {
 		try {
-			tile[0] = new Tile();
-			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass01.png"));
-			
-			tile[1] = new Tile();
-			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
-			
-			tile[2] = new Tile();
-			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water01.png"));
-		} catch (IOException e) {
+			BufferedImage img = ImageIO.read(getClass().getResourceAsStream(filePath));
+			return img;
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
-	public void loadMapFromFile() {
+	public Tile[] fillTileWithImages(String[] gameImages) {
+		for(int i = 0; i < gameImages.length; i++) {
+			tile[i] = new Tile();
+			tile[i].image = getImage(gameImages[i]);
+		}
+		/*** 
+		 * Maybe we need add one by one...	
+		 * if(tile.length == 0) {
+			tile[0] = new Tile();
+			tile[0].image = getImage(filePath);
+			return tile;
+		}**/
+		return tile;
+	}
+	
+	public void loadMapFromFile(String filePath) {
 		
 		try {
-			InputStream is = getClass().getResourceAsStream("/maps/map01.txt");
+			InputStream is = getClass().getResourceAsStream(filePath);
 			InputStreamReader mapFile = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(mapFile);	
 		
@@ -82,7 +102,6 @@ public class TileManager {
 		while(blockCol < gp.maxScreenCol && blockRow < gp.maxScreenRow) {
 			
 			int tileBlockNumber = mapTileNum[blockCol][blockRow];
-			
 			g2.drawImage(tile[tileBlockNumber].image, axisX, axisY, gp.tileSize, gp.tileSize, null);
 			blockCol++;
 			axisX += gp.tileSize;

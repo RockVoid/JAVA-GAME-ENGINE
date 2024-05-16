@@ -6,10 +6,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Iterator;
 
 import javax.imageio.ImageIO;
-
 import main.GamePanel;
 
 public class TileManager {
@@ -28,10 +26,10 @@ public class TileManager {
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
 		tile = new Tile[10];
-		mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
+		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 		
 		fillTileWithImages(gameTilesImages);
-		loadMapFromFile("/maps/map01.txt");
+		loadMapFromFile("/maps/world01.txt");
 	}
 	
 	public BufferedImage getImage(String filePath) {
@@ -49,13 +47,6 @@ public class TileManager {
 			tile[i] = new Tile();
 			tile[i].image = getImage(gameImages[i]);
 		}
-		/*** 
-		 * Maybe we need add one by one...	
-		 * if(tile.length == 0) {
-			tile[0] = new Tile();
-			tile[0].image = getImage(filePath);
-			return tile;
-		}**/
 		return tile;
 	}
 	
@@ -69,10 +60,10 @@ public class TileManager {
 			int col = 0;
 			int row = 0;
 			
-			while(col < gp.maxScreenCol && row < gp.maxScreenRow) {
+			while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
 				String line = br.readLine();
 						
-				while(col < gp.maxScreenCol) {
+				while(col < gp.maxWorldCol) {
 					String[] arrayOfStringNumbers = line.split(" ");
 					int num = Integer.parseInt(arrayOfStringNumbers[col]);
 	
@@ -80,7 +71,7 @@ public class TileManager {
 					col++;
 				}
 				
-				if(col == gp.maxScreenCol) {
+				if(col == gp.maxWorldCol) {
 					col = 0;
 					row++;
 				}
@@ -94,23 +85,39 @@ public class TileManager {
 	}
 	
 	public void draw(Graphics2D g2) {
-		int blockRow = 0;
-		int blockCol = 0;
-		int axisX = 0;
-		int axisY = 0;
+		int worldCol = 0;
+		int worldRow = 0;
 		
-		while(blockCol < gp.maxScreenCol && blockRow < gp.maxScreenRow) {
+		while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 			
-			int tileBlockNumber = mapTileNum[blockCol][blockRow];
-			g2.drawImage(tile[tileBlockNumber].image, axisX, axisY, gp.tileSize, gp.tileSize, null);
-			blockCol++;
-			axisX += gp.tileSize;
+			int tileBlockNumber = mapTileNum[worldCol][worldRow];
 			
-			if(blockCol == gp.maxScreenCol) {
-				blockCol = 0;
-				blockRow++;
-				axisX = 0;
-				axisY += gp.tileSize;
+			// Mounting the map block schema - where the map must be projected?
+			int worldX = worldRow * gp.tileSize; // Here
+			int worldY = worldCol * gp.tileSize; // and here
+			// Ups, the player moves, so...
+			int screenX = worldX - gp.player.worldX + gp.player.middleScreenX; 
+			int screenY = worldY - gp.player.worldY + gp.player.middleScreenY; 
+			
+			
+			// As long as X grow or shrink...
+			boolean leftLimitLoad = worldX + gp.tileSize > (gp.player.worldX - gp.player.middleScreenX);
+			boolean rightLimitLoad = worldX - gp.tileSize < (gp.player.worldX + gp.player.middleScreenX);
+
+			// As long as Y grow or shrink...
+			boolean upLimitLoad = worldY + gp.tileSize > (gp.player.worldY - gp.player.middleScreenY);
+			boolean downLimitLoad = worldY - gp.tileSize < (gp.player.worldY + gp.player.middleScreenY);
+			
+			if(leftLimitLoad && rightLimitLoad && upLimitLoad && downLimitLoad) {
+				g2.drawImage(tile[tileBlockNumber].image, screenX, screenY, gp.tileSize, gp.tileSize, null);					
+			}
+			
+			
+			worldCol++;
+			 
+			if(worldCol == gp.maxWorldCol) {
+				worldCol = 0;
+				worldRow++;
 			}
 		}
 	}

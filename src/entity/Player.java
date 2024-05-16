@@ -12,18 +12,26 @@ import main.KeyHandler;
 public class Player extends Entity {
 	GamePanel gp;
 	KeyHandler keyH;
+	public final int middleScreenY;
+	public final int middleScreenX;
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
 		this.gp = gp;
 		this.keyH = keyH;
+		
+		middleScreenY = (gp.screenHeight / 2) - (gp.tileSize/2);
+		middleScreenX = (gp.screenWidth / 2) - (gp.tileSize/2);
 		
 		setDefaultValues();
 		getPlayerImages();
 	}
 	
 	public void setDefaultValues() {
-		y = 100;
-		x = 100;
+		int initialPlayerPositionY = 23;
+		int initialPlayerPositionX = 21;
+		
+		worldY = gp.tileSize * initialPlayerPositionY;
+		worldX = gp.tileSize * initialPlayerPositionX;
 		speed = 4;
 		direction = "down";
 	}
@@ -46,8 +54,10 @@ public class Player extends Entity {
 	}
 	
 	public void movePlayer() {
+		int framesPassed = 12;
+		
 		spriteCounter++;
-		if(spriteCounter == 12) {
+		if(spriteCounter == framesPassed) {
 			spriteNum = !spriteNum;
 			spriteCounter = 0;
 		}
@@ -55,22 +65,22 @@ public class Player extends Entity {
 	// 2REFACTOR
 	public void update() {		
 		if(keyH.rightPressed) { 
-			x += speed; 
+			worldX += speed; 
 			direction = "right";
 			movePlayer();
 		}
 		if(keyH.leftPressed) { 
-			x -= speed; 
+			worldX -= speed; 
 			direction = "left";
 			movePlayer();
 		}
 		if(keyH.upPressed) { 
-			y -= speed; 
+			worldY -= speed; 
 			direction = "up";
 			movePlayer();
 		}
 		if(keyH.downPressed) { 
-			y += speed; 
+			worldY += speed; 
 			direction = "down";
 			movePlayer();
 		} 
@@ -103,6 +113,6 @@ public class Player extends Entity {
 				break;
 		}
 		
-		g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+		g2.drawImage(image, middleScreenX, middleScreenY, gp.tileSize, gp.tileSize, null);
 	}
 }

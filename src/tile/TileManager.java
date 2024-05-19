@@ -12,15 +12,15 @@ import main.GamePanel;
 
 public class TileManager {
 	GamePanel gp;
-	Tile[] tile;
-	int mapTileNum[][];
-	String[] gameTilesImages = {
-			"/tiles/grass01.png",
-			"/tiles/wall.png",
-			"/tiles/water01.png",
-			"/tiles/earth.png",
-			"/tiles/tree.png",
-			"/tiles/sand.png"
+	public Tile[] tile;
+	public int mapTileNum[][];
+	Tile[] gameTilesImages = {
+			new Tile("/tiles/grass01.png", false),
+			new Tile("/tiles/wall.png", true),
+			new Tile("/tiles/water01.png", true),
+			new Tile("/tiles/earth.png", false),
+			new Tile("/tiles/tree.png", true),
+			new Tile("/tiles/sand.png", false)
 	};
 	
 	public TileManager(GamePanel gp) {
@@ -42,10 +42,10 @@ public class TileManager {
 		return null;
 	}
 	
-	public Tile[] fillTileWithImages(String[] gameImages) {
+	public Tile[] fillTileWithImages(Tile[] gameImages) {
 		for(int i = 0; i < gameImages.length; i++) {
-			tile[i] = new Tile();
-			tile[i].image = getImage(gameImages[i]);
+			tile[i] = new Tile(gameImages[i].filePath, gameImages[i].collision);
+			tile[i].image = getImage(gameImages[i].filePath);
 		}
 		return tile;
 	}
@@ -122,22 +122,4 @@ public class TileManager {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

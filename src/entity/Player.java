@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -21,6 +22,14 @@ public class Player extends Entity {
 		
 		middleScreenY = (gp.screenHeight / 2) - (gp.tileSize/2);
 		middleScreenX = (gp.screenWidth / 2) - (gp.tileSize/2);
+		
+		solidArea = new Rectangle();
+//		solidArea.x = middleScreenX + 8;
+//		solidArea.y = middleScreenY + 16;
+		solidArea.x = 8;
+		solidArea.y = 16;
+		solidArea.width = 32;
+		solidArea.height = 32;
 		
 		setDefaultValues();
 		getPlayerImages();
@@ -62,28 +71,42 @@ public class Player extends Entity {
 			spriteCounter = 0;
 		}
 	}
-	// 2REFACTOR
+	// BTW, SORRY BY THE AMOUNT OF IFS, NEEDS REFACTOR HEHE
 	public void update() {		
-		if(keyH.rightPressed) { 
-			worldX += speed; 
+		
+		collisionOn = false;
+		gp.cChecker.checkTile(this);
+		
+		if(keyH.rightPressed) {  
 			direction = "right";
 			movePlayer();
 		}
 		if(keyH.leftPressed) { 
-			worldX -= speed; 
 			direction = "left";
 			movePlayer();
 		}
 		if(keyH.upPressed) { 
-			worldY -= speed; 
 			direction = "up";
 			movePlayer();
 		}
 		if(keyH.downPressed) { 
-			worldY += speed; 
 			direction = "down";
 			movePlayer();
 		} 
+
+		if(keyH.upPressed && !collisionOn) { 
+			worldY -= speed; 
+		}
+		
+		if(keyH.rightPressed && !collisionOn) { 
+			worldX += speed; 
+		}
+		if(keyH.leftPressed && !collisionOn) { 
+			worldX -= speed; 
+		}
+		if(keyH.downPressed && !collisionOn) { 
+			worldY += speed; 
+		}
 	}
 	
 	public BufferedImage setDirectionImage(BufferedImage movement, BufferedImage patternImg1, BufferedImage patternImg2) {

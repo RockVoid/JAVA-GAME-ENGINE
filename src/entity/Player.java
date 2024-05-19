@@ -27,8 +27,8 @@ public class Player extends Entity {
 	}
 	
 	public void setDefaultValues() {
-		int initialPlayerPositionY = 23;
-		int initialPlayerPositionX = 21;
+		int initialPlayerPositionY = 21;
+		int initialPlayerPositionX = 23;
 		
 		worldY = gp.tileSize * initialPlayerPositionY;
 		worldX = gp.tileSize * initialPlayerPositionX;

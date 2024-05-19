@@ -93,8 +93,8 @@ public class TileManager {
 			int tileBlockNumber = mapTileNum[worldCol][worldRow];
 			
 			// Mounting the map block schema - where the map must be projected?
-			int worldX = worldRow * gp.tileSize; // Here
-			int worldY = worldCol * gp.tileSize; // and here
+			int worldX = worldCol * gp.tileSize; // Here
+			int worldY = worldRow * gp.tileSize; // and here
 			// Ups, the player moves, so...
 			int screenX = worldX - gp.player.worldX + gp.player.middleScreenX; 
 			int screenY = worldY - gp.player.worldY + gp.player.middleScreenY; 

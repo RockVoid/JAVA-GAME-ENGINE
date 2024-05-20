@@ -1,14 +1,12 @@
 package tile;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import javax.imageio.ImageIO;
 import main.GamePanel;
+import utils.Utils;
 
 public class TileManager {
 	GamePanel gp;
@@ -22,6 +20,7 @@ public class TileManager {
 			new Tile("/tiles/tree.png", true),
 			new Tile("/tiles/sand.png", false)
 	};
+	public Utils utils = new Utils();
 	
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
@@ -32,20 +31,11 @@ public class TileManager {
 		loadMapFromFile("/maps/world01.txt");
 	}
 	
-	public BufferedImage getImage(String filePath) {
-		try {
-			BufferedImage img = ImageIO.read(getClass().getResourceAsStream(filePath));
-			return img;
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 	
 	public Tile[] fillTileWithImages(Tile[] gameImages) {
 		for(int i = 0; i < gameImages.length; i++) {
 			tile[i] = new Tile(gameImages[i].filePath, gameImages[i].collision);
-			tile[i].image = getImage(gameImages[i].filePath);
+			tile[i].image = utils.getImage(gameImages[i].filePath);
 		}
 		return tile;
 	}

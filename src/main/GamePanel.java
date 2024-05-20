@@ -1,6 +1,7 @@
 package main;
 
 import entity.Player;
+import gameObjects.SuperObject;
 import tile.TileManager;
 
 import java.awt.Color;
@@ -40,6 +41,8 @@ public class GamePanel extends JPanel implements Runnable{
 	public Player player = new Player(this, keyH);
 	public TileManager tileManager = new TileManager(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
+	public SuperObject gameObjects[] = new SuperObject[10];
+	AssetSetter aSetter = new AssetSetter(this);
 	
 	int playerX = 100;
 	int playerY = 100;
@@ -57,6 +60,10 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setDoubleBuffered(true);
 		this.addKeyListener(keyH);
 		this.setFocusable(true);
+	}
+	
+	public void setupObjects() {
+		aSetter.setupGameObjects();
 	}
 	
 	public void startGameThread() {
@@ -97,6 +104,11 @@ public class GamePanel extends JPanel implements Runnable{
 		Graphics2D g2 = (Graphics2D)g;
 		
 		tileManager.draw(g2);
+		for(int i = 0; i < gameObjects.length; i++) {
+			if(gameObjects[i] != null) {
+				gameObjects[i].draw(g2, this);
+			}
+		}
 		player.draw(g2);
 		
 		g2.dispose();

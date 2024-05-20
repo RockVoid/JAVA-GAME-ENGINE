@@ -10,6 +10,12 @@ public class CollisionChecker {
 		this.gp = gp;
 	}
 	
+	public void verifyCollision(Entity entity, int tileNum1, int tileNum2) {
+		if(gp.tileManager.tile[tileNum1].collision || gp.tileManager.tile[tileNum2].collision) {
+			entity.collisionOn = true;
+		}
+	}
+	
 	public void checkTile(Entity entity) {
 		// solidArea = Solid Area Coordinates
 		int solidAreaLeftSide = entity.worldX + entity.solidArea.x;
@@ -31,36 +37,30 @@ public class CollisionChecker {
 			// so to predict where player will be, we decrease the point.
 			solidAreaTopRow = (solidAreaTopSide - entity.speed)/gp.tileSize;
 			tileNum1 = gp.tileManager.mapTileNum[solidAreaLeftCol][solidAreaTopRow];
-			tileNum2 = gp.tileManager.mapTileNum[solidAreaRightCol][solidAreaTopRow];
+			tileNum2 = gp.tileManager.mapTileNum[solidAreaRightCol][solidAreaTopRow];			
 			
-			if(gp.tileManager.tile[tileNum1].collision || gp.tileManager.tile[tileNum2].collision) {
-				entity.collisionOn = true;
-			}
+			verifyCollision(entity, tileNum1, tileNum2);
 			break;
 		case "down":
 			solidAreaBottomRow = (solidAreaBottomSide + entity.speed)/gp.tileSize;
 			tileNum1 = gp.tileManager.mapTileNum[solidAreaLeftCol][solidAreaBottomRow];
 			tileNum2 = gp.tileManager.mapTileNum[solidAreaRightCol][solidAreaBottomRow];
 			
-			if(gp.tileManager.tile[tileNum1].collision || gp.tileManager.tile[tileNum2].collision) {
-				entity.collisionOn = true;
-			}
+			verifyCollision(entity, tileNum1, tileNum2);
 			break;
 		case "right":
 			solidAreaRightCol = (solidAreaRightSide + entity.speed)/gp.tileSize;
 			tileNum1 = gp.tileManager.mapTileNum[solidAreaRightCol][solidAreaTopRow];
 			tileNum2 = gp.tileManager.mapTileNum[solidAreaRightCol][solidAreaBottomRow];
-			if(gp.tileManager.tile[tileNum1].collision || gp.tileManager.tile[tileNum2].collision) {
-				entity.collisionOn = true;
-			}
+			
+			verifyCollision(entity, tileNum1, tileNum2);
 			break;
 		case "left":
 			solidAreaLeftCol = (solidAreaLeftSide - entity.speed)/gp.tileSize;
 			tileNum1 = gp.tileManager.mapTileNum[solidAreaLeftCol][solidAreaTopRow];
 			tileNum2 = gp.tileManager.mapTileNum[solidAreaLeftCol][solidAreaBottomRow];
-			if(gp.tileManager.tile[tileNum1].collision || gp.tileManager.tile[tileNum2].collision) {
-				entity.collisionOn = true;
-			}
+			
+			verifyCollision(entity, tileNum1, tileNum2);
 			break;
 		}
 	}

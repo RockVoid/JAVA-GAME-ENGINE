@@ -27,10 +27,37 @@ public class CollisionChecker {
 		
 		switch(entity.direction) {
 		case "up":
-			solidAreaLeftCol = (solidAreaLeftSide - entity.speed)/gp.tileSize;
+			// When the entity goes up, the axis Y decreases,
+			// so to predict where player will be, we decrease the point.
+			solidAreaTopRow = (solidAreaTopSide - entity.speed)/gp.tileSize;
 			tileNum1 = gp.tileManager.mapTileNum[solidAreaLeftCol][solidAreaTopRow];
 			tileNum2 = gp.tileManager.mapTileNum[solidAreaRightCol][solidAreaTopRow];
 			
+			if(gp.tileManager.tile[tileNum1].collision || gp.tileManager.tile[tileNum2].collision) {
+				entity.collisionOn = true;
+			}
+			break;
+		case "down":
+			solidAreaBottomRow = (solidAreaBottomSide + entity.speed)/gp.tileSize;
+			tileNum1 = gp.tileManager.mapTileNum[solidAreaLeftCol][solidAreaBottomRow];
+			tileNum2 = gp.tileManager.mapTileNum[solidAreaRightCol][solidAreaBottomRow];
+			
+			if(gp.tileManager.tile[tileNum1].collision || gp.tileManager.tile[tileNum2].collision) {
+				entity.collisionOn = true;
+			}
+			break;
+		case "right":
+			solidAreaRightCol = (solidAreaRightSide + entity.speed)/gp.tileSize;
+			tileNum1 = gp.tileManager.mapTileNum[solidAreaRightCol][solidAreaTopRow];
+			tileNum2 = gp.tileManager.mapTileNum[solidAreaRightCol][solidAreaBottomRow];
+			if(gp.tileManager.tile[tileNum1].collision || gp.tileManager.tile[tileNum2].collision) {
+				entity.collisionOn = true;
+			}
+			break;
+		case "left":
+			solidAreaLeftCol = (solidAreaLeftSide - entity.speed)/gp.tileSize;
+			tileNum1 = gp.tileManager.mapTileNum[solidAreaLeftCol][solidAreaTopRow];
+			tileNum2 = gp.tileManager.mapTileNum[solidAreaLeftCol][solidAreaBottomRow];
 			if(gp.tileManager.tile[tileNum1].collision || gp.tileManager.tile[tileNum2].collision) {
 				entity.collisionOn = true;
 			}

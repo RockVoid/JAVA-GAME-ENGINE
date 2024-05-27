@@ -1,6 +1,6 @@
 package main;
 
-import gameObjects.OBJ_key;
+import gameObjects.GameObject;
 
 public class AssetSetter {
 	GamePanel gp;
@@ -10,7 +10,7 @@ public class AssetSetter {
 	}
 	
 	public void setupGameObjects() {
-		gp.gameObjects[0] = new OBJ_key();
+		gp.gameObjects[0] = new GameObject("key", "/objects/key.png");
 		gp.gameObjects[0].worldX = 23 * gp.tileSize;
 		gp.gameObjects[0].worldY = 7 * gp.tileSize;
 	}
